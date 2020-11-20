@@ -2,51 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace NextHappyYear
+namespace DistinctYear
 {
-    //Given a year, Find The next distinct year or the closest year 
-    //Distinct year is the year with only distinct digits , (e.g) 2018
-    //Year Of Course is always Positive .
-    //Input Year with in range(1000  ≤  y ≤  9800)
-    class NextHappyYear
-    {
-        static void Main()
-        {
-            int examples = 10000;
-            int runTimes = 10;
-
-            DistinctYear happyYear = new DistinctYear();
-            Random random = new Random();
-            List<int> a = new List<int>();
-
-            var watch = System.Diagnostics.Stopwatch.StartNew();
-            for (int i = 0; i < examples; i++)
-            {
-                a.Add(random.Next(1000, 9800));
-            }
-            watch.Stop();
-            Console.WriteLine($"Generate Time: {watch.ElapsedMilliseconds} ms");
-
-            if (!watch.IsRunning)
-                watch.Restart();
-
-            for (int i = 0; i < runTimes; i++)
-            {
-                foreach (short item in a)
-                {
-                    happyYear.FindNext(item);
-                }
-            }
-            watch.Stop();
-
-
-            Console.WriteLine($"Execution Time for {examples} examples: {watch.ElapsedMilliseconds / runTimes } ms");
-            Console.ReadKey();
-        }
-    }
-
     public class DistinctYear
     {
         public short FindNext(short year)
