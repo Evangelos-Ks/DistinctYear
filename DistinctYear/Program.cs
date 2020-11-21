@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DistinctYear.Menu;
+using System;
 using System.Collections.Generic;
 
 namespace DistinctYear
@@ -11,6 +12,10 @@ namespace DistinctYear
             //Distinct year is the year with only distinct digits , (e.g) 2018
             //Year Of Course is always Positive .
             //Input Year with in range(1000  ≤  y ≤  9800)
+            MainMenu menu = new MainMenu();
+            menu.Start();
+
+            
             int examples = 10000;
             int runTimes = 10;
 
