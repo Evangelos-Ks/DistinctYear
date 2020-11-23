@@ -16,35 +16,35 @@ namespace DistinctYear
             menu.Start();
 
             
-            int examples = 10000;
-            int runTimes = 10;
+            //int examples = 10000;
+            //int runTimes = 10;
 
-            DistinctYear distinctYear = new DistinctYear();
-            Random random = new Random();
-            List<int> a = new List<int>();
+            //DistinctYear distinctYear = new DistinctYear();
+            //Random random = new Random();
+            //List<int> a = new List<int>();
 
-            var watch = System.Diagnostics.Stopwatch.StartNew();
-            for (int i = 0; i < examples; i++)
-            {
-                a.Add(random.Next(1000, 9800));
-            }
-            watch.Stop();
-            Console.WriteLine($"Generate Time: {watch.ElapsedMilliseconds} ms");
+            //var watch = System.Diagnostics.Stopwatch.StartNew();
+            //for (int i = 0; i < examples; i++)
+            //{
+            //    a.Add(random.Next(1000, 9800));
+            //}
+            //watch.Stop();
+            //Console.WriteLine($"Generate Time: {watch.ElapsedMilliseconds} ms");
 
-            if (!watch.IsRunning)
-                watch.Restart();
+            //if (!watch.IsRunning)
+            //    watch.Restart();
 
-            for (int i = 0; i < runTimes; i++)
-            {
-                foreach (short item in a)
-                {
-                    distinctYear.FindNext(item);
-                }
-            }
-            watch.Stop();
+            //for (int i = 0; i < runTimes; i++)
+            //{
+            //    foreach (short item in a)
+            //    {
+            //        distinctYear.FindNext(item);
+            //    }
+            //}
+            //watch.Stop();
 
 
-            Console.WriteLine($"Execution Time for {examples} examples: {watch.ElapsedMilliseconds / runTimes } ms");
+            //Console.WriteLine($"Execution Time for {examples} examples: {watch.ElapsedMilliseconds / runTimes } ms");
             Console.ReadKey();
         }
     }

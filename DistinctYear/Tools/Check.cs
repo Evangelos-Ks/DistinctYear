@@ -6,7 +6,7 @@ namespace DistinctYear.Tools
 {
     public class Check
     {
-        public bool CheckInput(string input)
+        public bool CheckMenuInput(string input)
         {
             if (input == "1" || input == "2")
             {
@@ -16,6 +16,37 @@ namespace DistinctYear.Tools
             {
                 return false;
             }
+        }
+
+        public bool CheckYearInput(string input, out Int16 inputToInt)
+        {
+            try
+            {
+                inputToInt = Convert.ToInt16(input);
+            }
+            catch (Exception)
+            {
+                inputToInt = 0;
+                return false;
+            }
+
+            if (inputToInt < 1000 || inputToInt > 9800)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool CheckYesOrNO(string input)
+        {
+            string inputLower = input.ToLower();
+            if (inputLower == "yes" || inputLower == "no")
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
