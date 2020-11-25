@@ -8,7 +8,7 @@ namespace DistinctYear.Tools
     {
         public bool CheckMenuInput(string input)
         {
-            if (input == "1" || input == "2")
+            if ((input == "1" || input == "2") || input == "3")
             {
                 return true;
             }
@@ -47,6 +47,53 @@ namespace DistinctYear.Tools
             }
 
             return false;
+        }
+
+        public bool CheckExamplesInput(string input, out int inputToInt)
+        {
+
+            try
+            {
+                inputToInt = Convert.ToInt32(input);
+            }
+            catch (Exception)
+            {
+                inputToInt = 0;
+                return false;
+            }
+
+            if (inputToInt > 0 && inputToInt <= 10000000)
+            {
+                return true;
+            }
+            else
+            {
+                inputToInt = 0;
+                return false;
+            }
+        }
+
+        public bool CheckRepetitionInput(string input, out byte inputToByte)
+        {
+            try
+            {
+                inputToByte = Convert.ToByte(input);
+            }
+            catch (Exception)
+            {
+                inputToByte = 0;
+                return false;
+            }
+
+            if (inputToByte > 0 && inputToByte <= 10)
+            {
+                return true;
+            }
+            else
+            {
+                inputToByte = 0;
+                return false;
+            }
         }
     }
 }

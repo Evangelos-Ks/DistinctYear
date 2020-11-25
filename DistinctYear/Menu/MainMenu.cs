@@ -12,20 +12,18 @@ namespace DistinctYear.Menu
         //============================================ Fields ==============================================================
         private Check check;
         private DistinctYear distinctYear;
-        private Stopwatch watch = Stopwatch.StartNew();
-        private short yearResult;
+        private Stopwatch watch;
         private string inputMenu;
-        private string inputYear;
-        private bool doYouWantToContinue;
-        private string doYouWantToContinueInput;
-
-
+        private bool isTheInputValid;
+        private Random random;
 
         //============================================ Constructor =========================================================
         public MainMenu()
         {
-            this.check = new Check();
-            this.distinctYear = new DistinctYear();
+            check = new Check();
+            distinctYear = new DistinctYear();
+            watch = new Stopwatch();
+            random = new Random();
         }
 
         //============================================ Methods =============================================================
@@ -33,44 +31,50 @@ namespace DistinctYear.Menu
         {
             bool theInputIsCorrect;
 
-            Seperator();
-            Console.WriteLine();
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("\tWould you like to add a specific year or a range of random years?");
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine();
-            Console.WriteLine("\t1. One year");
-            Console.WriteLine("\t2. Random range of years");
             do
             {
-                //Check Input
+                theInputIsCorrect = false;
+                Seperator();
                 Console.WriteLine();
-                Console.Write("\tPress the number of your choice: ");
-                inputMenu = Console.ReadLine().Trim();
-                theInputIsCorrect = check.CheckMenuInput(inputMenu);
-
-                if (!theInputIsCorrect)
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("\tWould you like to add a specific year or a range of random years?");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine();
+                Console.WriteLine("\t1. One year");
+                Console.WriteLine("\t2. Random range of years");
+                do
                 {
-                    WrongInputMenu();
+                    //Check Input
+                    Console.WriteLine();
+                    Console.Write("\tPress the number of your choice: ");
+                    inputMenu = Console.ReadLine().Trim();
+                    theInputIsCorrect = check.CheckMenuInput(inputMenu);
+
+                    if (!theInputIsCorrect)
+                    {
+                        WrongInputMenu();
+                    }
+
+                } while (!theInputIsCorrect);
+                Console.WriteLine();
+
+                switch (inputMenu)
+                {
+                    case "2":
+                        SelectRangeOfYearsMenu();
+                        break;
+                    default:
+                        SelectOneYearMenu();
+                        break;
                 }
 
-            } while (!theInputIsCorrect);
-            Console.WriteLine();
-
-            switch (inputMenu)
-            {
-                default:
-                    SelectOneYear();
-                    break;
-            }
 
 
 
 
 
 
-
-
+            } while (inputMenu != "3");
 
         }
 
@@ -88,12 +92,16 @@ namespace DistinctYear.Menu
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        private void SelectOneYear()
+        private void SelectOneYearMenu()
         {
             Int16 inputToInt;
-            bool isTheInputValid;
+            string inputYear;
+            short yearResult;
+
+
             do
             {
+                isTheInputValid = false;
                 Seperator();
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Yellow;
@@ -111,7 +119,7 @@ namespace DistinctYear.Menu
                         WrongInputMenu();
                     }
                 } while (!isTheInputValid);
-               
+
                 yearResult = distinctYear.FindNext(inputToInt);
 
                 Console.WriteLine();
@@ -127,9 +135,82 @@ namespace DistinctYear.Menu
             } while (AskToContinue());
         }
 
+        private void SelectRangeOfYearsMenu()
+        {
+            string input;
+            int examplesInput;
+            byte repetitionInput;
+            int[] examplesArray;
+            int[] outputArray;
+
+            Seperator();
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\tThe valid examples that you can put is between 1 and 10000000.");
+            Console.WriteLine();
+            Console.WriteLine("\tThe repetition of the examples that you can put is between 1 and 10.");
+            Console.WriteLine("\t(This help to take back the avarage execution time. More repeturion means more accuracy)");
+            Console.ForegroundColor = ConsoleColor.White;
+            do
+            {
+                isTheInputValid = false;
+                Console.WriteLine();
+                Console.Write("\tPlease input the random expmples that you want: ");
+                input = Console.ReadLine().Trim();
+
+                isTheInputValid = check.CheckExamplesInput(input, out examplesInput);
+                if (!isTheInputValid)
+                {
+                    WrongInputMenu();
+                }
+            } while (!isTheInputValid);
+            examplesArray = new int[examplesInput];
+
+            do
+            {
+                isTheInputValid = false;
+                Console.WriteLine();
+                Console.Write("\tPlease input the number of repetition: ");
+                input = Console.ReadLine().Trim();
+
+                isTheInputValid = check.CheckRepetitionInput(input, out repetitionInput);
+                if (!isTheInputValid)
+                {
+                    WrongInputMenu();
+                }
+            } while (!isTheInputValid);
+
+            //check if the watch is running
+            if (watch.IsRunning)
+            {
+                watch.Restart();
+            }
+            else
+            {
+                watch.Start();
+            }
+
+            for (int i = 0; i < examplesInput; i++)
+            {
+                examplesArray[i] = random.Next(1000, 9800);
+            }
+            watch.Stop();
+
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.Write($"\tGenerate time of {examplesInput} examples: ");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"{watch.ElapsedMilliseconds} ms");
+
+            //Make the code of distinct
+
+        }
+
         private bool AskToContinue()
         {
-            Seperator();
+            bool doYouWantToContinue;
+            string doYouWantToContinueInput;
+
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Yellow;
             if (inputMenu == "1")
@@ -152,6 +233,7 @@ namespace DistinctYear.Menu
                     WrongInputMenu();
                 }
             } while (!doYouWantToContinue);
+            Console.WriteLine();
 
             return doYouWantToContinueInput.ToLower() == "yes" ? true : false;
         }
