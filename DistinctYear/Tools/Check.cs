@@ -18,7 +18,7 @@ namespace DistinctYear.Tools
             }
         }
 
-        public bool CheckYearInput(string input, out Int16 inputToInt)
+        public bool CheckYearInput(string input, out int inputToInt)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace DistinctYear.Tools
             }
         }
 
-        public bool CheckRepetitionInput(string input, out byte inputToByte)
+        public bool CheckRepetitionInput(string input, out int inputToByte)
         {
             try
             {

@@ -7,7 +7,7 @@ namespace DistinctYear
 {
     public class DistinctYear
     {
-        public short FindNext(short year)
+        public int FindNext(int year)
         {
             string yearStr = Convert.ToString(year);
             int yearLength;
@@ -116,7 +116,7 @@ namespace DistinctYear
                     }
 
                     //make the new year int and assign it to the year
-                    year = Convert.ToInt16(newYear);
+                    year = Convert.ToInt32(newYear);
 
                     //run until there is no double digit
                 } while (thereIsDouble);

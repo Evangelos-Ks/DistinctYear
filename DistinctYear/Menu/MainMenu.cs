@@ -42,6 +42,7 @@ namespace DistinctYear.Menu
                 Console.WriteLine();
                 Console.WriteLine("\t1. One year");
                 Console.WriteLine("\t2. Random range of years");
+                Console.WriteLine("\t3. Exit");
                 do
                 {
                     //Check Input
@@ -60,22 +61,19 @@ namespace DistinctYear.Menu
 
                 switch (inputMenu)
                 {
+                    case "1":
+                        SelectOneYearMenu();
+                        break;
                     case "2":
                         SelectRangeOfYearsMenu();
                         break;
                     default:
-                        SelectOneYearMenu();
                         break;
                 }
-
-
-
-
-
-
-
             } while (inputMenu != "3");
 
+            Console.WriteLine();
+            Console.WriteLine("\tThank you!!!");
         }
 
         private void Seperator()
@@ -94,10 +92,9 @@ namespace DistinctYear.Menu
 
         private void SelectOneYearMenu()
         {
-            Int16 inputToInt;
+            int inputToInt;
             string inputYear;
-            short yearResult;
-
+            int yearResult;
 
             do
             {
@@ -137,73 +134,144 @@ namespace DistinctYear.Menu
 
         private void SelectRangeOfYearsMenu()
         {
-            string input;
-            int examplesInput;
-            byte repetitionInput;
-            int[] examplesArray;
-            int[] outputArray;
-
-            Seperator();
-            Console.WriteLine();
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("\tThe valid examples that you can put is between 1 and 10000000.");
-            Console.WriteLine();
-            Console.WriteLine("\tThe repetition of the examples that you can put is between 1 and 10.");
-            Console.WriteLine("\t(This help to take back the avarage execution time. More repeturion means more accuracy)");
-            Console.ForegroundColor = ConsoleColor.White;
             do
             {
-                isTheInputValid = false;
+                string input;
+                string showTheResults;
+                bool validInput;
+                int examplesInput;
+                int repetitionInput;
+                int[] examplesArray;
+                int[] outputArray;
+
+                Seperator();
                 Console.WriteLine();
-                Console.Write("\tPlease input the random expmples that you want: ");
-                input = Console.ReadLine().Trim();
-
-                isTheInputValid = check.CheckExamplesInput(input, out examplesInput);
-                if (!isTheInputValid)
-                {
-                    WrongInputMenu();
-                }
-            } while (!isTheInputValid);
-            examplesArray = new int[examplesInput];
-
-            do
-            {
-                isTheInputValid = false;
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("\tThe valid examples that you can put are between 1 and 10000000.");
                 Console.WriteLine();
-                Console.Write("\tPlease input the number of repetition: ");
-                input = Console.ReadLine().Trim();
+                Console.WriteLine("\tThe number of times that the examples are run (repetition) that you can put are between 1 and 10.");
+                Console.WriteLine("\t(This helps to take back the avarage execution time. More repetition means more accuracy)");
+                Console.ForegroundColor = ConsoleColor.White;
 
-                isTheInputValid = check.CheckRepetitionInput(input, out repetitionInput);
-                if (!isTheInputValid)
+                //Check examples input
+                do
                 {
-                    WrongInputMenu();
+                    isTheInputValid = false;
+                    Console.WriteLine();
+                    Console.Write("\tPlease input the random examples that you want: ");
+                    input = Console.ReadLine().Trim();
+
+                    isTheInputValid = check.CheckExamplesInput(input, out examplesInput);
+                    if (!isTheInputValid)
+                    {
+                        WrongInputMenu();
+                    }
+                } while (!isTheInputValid);
+
+                //make new arrays with the length of the examples
+                examplesArray = new int[examplesInput];
+                outputArray = new int[examplesInput];
+
+                //Check repetition input
+                do
+                {
+                    isTheInputValid = false;
+                    Console.WriteLine();
+                    Console.Write("\tPlease input the number of repetition: ");
+                    input = Console.ReadLine().Trim();
+
+                    isTheInputValid = check.CheckRepetitionInput(input, out repetitionInput);
+                    if (!isTheInputValid)
+                    {
+                        WrongInputMenu();
+                    }
+                } while (!isTheInputValid);
+
+                //check if the watch is running
+                if (watch.IsRunning)
+                {
+                    watch.Restart();
                 }
-            } while (!isTheInputValid);
+                else
+                {
+                    watch.Start();
+                }
 
-            //check if the watch is running
-            if (watch.IsRunning)
-            {
-                watch.Restart();
-            }
-            else
-            {
-                watch.Start();
-            }
+                //Generate examples
+                for (int i = 0; i < examplesInput; i++)
+                {
+                    examplesArray[i] = random.Next(1000, 9800);
+                }
+                watch.Stop();
 
-            for (int i = 0; i < examplesInput; i++)
-            {
-                examplesArray[i] = random.Next(1000, 9800);
-            }
-            watch.Stop();
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.Write($"\tGenerate time of {examplesInput} examples: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"{watch.ElapsedMilliseconds} ms");
+                Console.WriteLine();
 
-            Console.WriteLine();
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.Write($"\tGenerate time of {examplesInput} examples: ");
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"{watch.ElapsedMilliseconds} ms");
+                //check if the watch is running
+                if (watch.IsRunning)
+                {
+                    watch.Restart();
+                }
+                else
+                {
+                    watch.Start();
+                }
 
-            //Make the code of distinct
+                //Find the next year and asign the result in the outputArray
+                for (int i = 0; i < examplesInput; i++)
+                {
+                    outputArray[i] = distinctYear.FindNext(examplesArray[i]);
+                }
+                watch.Stop();
+                
+                //Show the execution time
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.Write($"\tExecution time of {examplesInput} examples: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"{watch.ElapsedMilliseconds/repetitionInput} ms");
+                Console.WriteLine();
 
+                //Ask if the user wants to see the results
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("\tWhould you like to see the results? Yes/No");
+                Console.ForegroundColor = ConsoleColor.White;
+                do
+                {
+                    Console.WriteLine();
+                    Console.Write("\tGive your answer: ");
+                    showTheResults = Console.ReadLine().Trim();
+                    validInput = check.CheckYesOrNO(showTheResults);
+                    if (!validInput)
+                    {
+                        WrongInputMenu();
+                    }
+                } while (!validInput);
+
+                //if the user wants to see the results
+                if (showTheResults.ToLower() == "yes")
+                {
+                    for (int i = 0; i < examplesInput; i++)
+                    {
+                        Console.WriteLine();
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
+                        Console.WriteLine($"\t--------------- {i + 1} ---------------");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.Write($"\tInput : ");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine(examplesArray[i]);
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.Write($"\tOutput : ");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine(outputArray[i]);
+                    }
+                }
+
+                //Ask if the user wants to continue in this mode
+            } while (AskToContinue());
         }
 
         private bool AskToContinue()
