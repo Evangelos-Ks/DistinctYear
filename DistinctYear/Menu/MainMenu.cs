@@ -16,6 +16,7 @@ namespace DistinctYear.Menu
         private string inputMenu;
         private bool isTheInputValid;
         private Random random;
+        private Generate generate;
 
         //============================================ Constructor =========================================================
         public MainMenu()
@@ -24,6 +25,7 @@ namespace DistinctYear.Menu
             distinctYear = new DistinctYear();
             watch = new Stopwatch();
             random = new Random();
+            generate = new Generate();
         }
 
         //============================================ Methods =============================================================
@@ -134,13 +136,15 @@ namespace DistinctYear.Menu
 
         private void SelectRangeOfYearsMenu()
         {
+            string input;
+            string showTheResults;
+            bool validInput;
+            int examplesInput;
+            int repetitionInput;
+            long generateTime;
+
             do
             {
-                string input;
-                string showTheResults;
-                bool validInput;
-                int examplesInput;
-                int repetitionInput;
                 int[] examplesArray;
                 int[] outputArray;
 
@@ -187,28 +191,14 @@ namespace DistinctYear.Menu
                     }
                 } while (!isTheInputValid);
 
-                //check if the watch is running
-                if (watch.IsRunning)
-                {
-                    watch.Restart();
-                }
-                else
-                {
-                    watch.Start();
-                }
-
                 //Generate examples
-                for (int i = 0; i < examplesInput; i++)
-                {
-                    examplesArray[i] = random.Next(1000, 9800);
-                }
-                watch.Stop();
+                examplesArray = generate.GenerateRandomExamples(examplesInput, out generateTime);
 
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.Write($"\tGenerate time of {examplesInput} examples: ");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine($"{watch.ElapsedMilliseconds} ms");
+                Console.WriteLine($"{generateTime} ms");
                 Console.WriteLine();
 
                 //check if the watch is running
@@ -270,6 +260,11 @@ namespace DistinctYear.Menu
                     }
                 }
 
+                input = "";
+                showTheResults = "";
+                validInput = false;
+                examplesInput = 0;
+                repetitionInput = 0;
                 //Ask if the user wants to continue in this mode
             } while (AskToContinue());
         }
