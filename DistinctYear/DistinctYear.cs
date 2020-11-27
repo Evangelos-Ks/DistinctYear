@@ -10,23 +10,22 @@ namespace DistinctYear
         public int FindNext(int year)
         {
             string yearStr = Convert.ToString(year);
-            int yearLength;
+            int yearLength = yearStr.Length;
             string newYear;
-            int[] digits;
+            byte[] digits;
             bool thereIsDouble;
             bool containTen;
-            byte distingDigits = 0;
+            int distingDigits = 0;
 
             //Add one year
             year += 1;
 
             //Check if the next year contains double digits
-            distingDigits = 0;
             yearStr = Convert.ToString(year);
-            distingDigits = (byte)yearStr.Distinct().Count();
+            distingDigits = yearStr.Distinct().Count();
 
             //if the next year doesn't contain double digits return it
-            if (distingDigits == 4)
+            if (distingDigits == yearLength)
             {
                 return year;
             }
@@ -39,7 +38,7 @@ namespace DistinctYear
                     yearStr = Convert.ToString(year);
                     newYear = Convert.ToString(year);
                     yearLength = yearStr.Length;
-                    digits = new int[yearLength];
+                    digits = new byte[yearLength];
                     thereIsDouble = false;
 
                     //take the first digit of the year
@@ -54,7 +53,7 @@ namespace DistinctYear
                             {
                                 thereIsDouble = true;
                                 //take the double digit and put it in the j = i+1 possition 
-                                digits[j] = Convert.ToByte(newYear[j].ToString()) + 1;
+                                digits[j] = (byte)(Convert.ToByte(newYear[j].ToString()) + 1);
 
                                 //make zero the following numbers
                                 for (int z = (j + 1); z < yearLength; z++)
@@ -93,7 +92,7 @@ namespace DistinctYear
 
                             for (int i = 0; i < yearLength; i++)
                             {
-                                if (digits[i] >= 10)
+                                if (digits[i] >= 10 && i != 0)
                                 {
                                     containTen = true;
                                     //make the 10 digit equal to 0
@@ -101,6 +100,7 @@ namespace DistinctYear
                                     //add 1 to the previous digit
                                     digits[i - 1] += 1;
                                 }
+                                
                             }
                             //check again util there are no digits bigger than 10
                         } while (containTen);

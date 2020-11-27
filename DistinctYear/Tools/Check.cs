@@ -22,7 +22,7 @@ namespace DistinctYear.Tools
         {
             try
             {
-                inputToInt = Convert.ToInt16(input);
+                inputToInt = Convert.ToInt32(input);
             }
             catch (Exception)
             {
@@ -30,7 +30,7 @@ namespace DistinctYear.Tools
                 return false;
             }
 
-            if (inputToInt < 1000 || inputToInt > 9800)
+            if (inputToInt < 10 || inputToInt > 2000000000)
             {
                 return false;
             }
@@ -62,7 +62,7 @@ namespace DistinctYear.Tools
                 return false;
             }
 
-            if (inputToInt > 0 && inputToInt <= 10000000)
+            if (inputToInt > 0 && inputToInt <= 2000000000)
             {
                 return true;
             }
@@ -85,7 +85,7 @@ namespace DistinctYear.Tools
                 return false;
             }
 
-            if (inputToByte > 0 && inputToByte <= 10)
+            if (inputToByte > 0 && inputToByte <= 100)
             {
                 return true;
             }
@@ -95,5 +95,26 @@ namespace DistinctYear.Tools
                 return false;
             }
         }
+
+        public bool CheckMinMaxYearInput(string input, out int inputToInt)
+        {
+            try
+            {
+                inputToInt = Convert.ToInt32(input);
+            }
+            catch (Exception)
+            {
+                inputToInt = 0;
+                return false;
+            }
+
+            if (inputToInt < 10 || inputToInt > 2000000000)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
     }
 }

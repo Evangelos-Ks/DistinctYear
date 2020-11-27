@@ -104,7 +104,7 @@ namespace DistinctYear.Menu
                 Seperator();
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("\tThe valid year that you can put is between 1000 and 9800.");
+                Console.WriteLine("\tThe valid year that you can put is between 10 and 2000000000.");
                 Console.ForegroundColor = ConsoleColor.White;
                 do
                 {
@@ -143,6 +143,8 @@ namespace DistinctYear.Menu
             int repetitionInput;
             long generateTime;
             long distinctTime;
+            int minYear;
+            int maxYear;
 
             do
             {
@@ -152,9 +154,11 @@ namespace DistinctYear.Menu
                 Seperator();
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("\tThe valid examples that you can put are between 1 and 10000000.");
+                Console.WriteLine("\tThe valid examples that you can put are between 1 and 2000000000.");
                 Console.WriteLine();
-                Console.WriteLine("\tThe number of times that the examples are run (repetition) that you can put are between 1 and 10.");
+                Console.WriteLine("\tThe range of years that you can test are between 10 and 2000000000.");
+                Console.WriteLine();
+                Console.WriteLine("\tThe number of times that the examples are run (repetition) that you can put are between 1 and 100.");
                 Console.WriteLine("\t(This helps to take back the avarage execution time. More repetition means more accuracy)");
                 Console.ForegroundColor = ConsoleColor.White;
 
@@ -163,7 +167,7 @@ namespace DistinctYear.Menu
                 {
                     isTheInputValid = false;
                     Console.WriteLine();
-                    Console.Write("\tPlease input the random examples that you want: ");
+                    Console.Write("\tPlease input number of the random examples that you want: ");
                     input = Console.ReadLine().Trim();
 
                     isTheInputValid = check.CheckExamplesInput(input, out examplesInput);
@@ -176,6 +180,47 @@ namespace DistinctYear.Menu
                 //make new arrays with the length of the examples
                 examplesArray = new int[examplesInput];
                 outputArray = new int[examplesInput];
+
+                //Check the range of years
+                Console.WriteLine();
+                Console.Write("\tInsert the range of the years.");
+                do
+                {
+                    do
+                    {
+                        isTheInputValid = false;
+                        Console.WriteLine();
+                        Console.Write("\tMinimum year: ");
+
+                        isTheInputValid = check.CheckYearInput(Console.ReadLine().Trim(), out minYear);
+                        if (!isTheInputValid)
+                        {
+                            WrongInputMenu();
+                        }
+                    } while (!isTheInputValid);
+
+                    do
+                    {
+                        isTheInputValid = false;
+                        Console.WriteLine();
+                        Console.Write("\tMaximum year: ");
+
+                        isTheInputValid = check.CheckYearInput(Console.ReadLine().Trim(), out maxYear);
+                        if (!isTheInputValid)
+                        {
+                            WrongInputMenu();
+                        }
+
+                        if (minYear >= maxYear)
+                        {
+                            isTheInputValid = false;
+                            WrongInputMenu();
+                        }
+                    } while (!isTheInputValid);
+
+                } while (!isTheInputValid);
+                
+
 
                 //Check repetition input
                 do
@@ -193,7 +238,7 @@ namespace DistinctYear.Menu
                 } while (!isTheInputValid);
 
                 //Generate examples
-                examplesArray = generate.GenerateRandomExamples(examplesInput, out generateTime);
+                examplesArray = generate.GenerateRandomExamples(examplesInput, minYear, maxYear, out generateTime);
 
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Magenta;
