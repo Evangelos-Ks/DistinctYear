@@ -81,7 +81,7 @@ namespace DistinctYear.Menu
         private void Seperator()
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("\t==================================================================");
+            Console.WriteLine("\t=================================================================================================");
             Console.ForegroundColor = ConsoleColor.White;
         }
 
@@ -142,6 +142,7 @@ namespace DistinctYear.Menu
             int examplesInput;
             int repetitionInput;
             long generateTime;
+            long distinctTime;
 
             do
             {
@@ -201,28 +202,14 @@ namespace DistinctYear.Menu
                 Console.WriteLine($"{generateTime} ms");
                 Console.WriteLine();
 
-                //check if the watch is running
-                if (watch.IsRunning)
-                {
-                    watch.Restart();
-                }
-                else
-                {
-                    watch.Start();
-                }
+                //Gemerate distinct years
+                outputArray =  generate.GenerateDistinctYears(examplesArray, repetitionInput, out distinctTime);
 
-                //Find the next year and asign the result in the outputArray
-                for (int i = 0; i < examplesInput; i++)
-                {
-                    outputArray[i] = distinctYear.FindNext(examplesArray[i]);
-                }
-                watch.Stop();
-                
                 //Show the execution time
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.Write($"\tExecution time of {examplesInput} examples: ");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine($"{watch.ElapsedMilliseconds/repetitionInput} ms");
+                Console.WriteLine($"{distinctTime / repetitionInput} ms");
                 Console.WriteLine();
 
                 //Ask if the user wants to see the results
@@ -244,20 +231,7 @@ namespace DistinctYear.Menu
                 //if the user wants to see the results
                 if (showTheResults.ToLower() == "yes")
                 {
-                    for (int i = 0; i < examplesInput; i++)
-                    {
-                        Console.WriteLine();
-                        Console.ForegroundColor = ConsoleColor.DarkYellow;
-                        Console.WriteLine($"\t--------------- {i + 1} ---------------");
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.Write($"\tInput : ");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine(examplesArray[i]);
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.Write($"\tOutput : ");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine(outputArray[i]);
-                    }
+                    generate.GenerateConsoleResults(examplesArray, outputArray);
                 }
 
                 input = "";

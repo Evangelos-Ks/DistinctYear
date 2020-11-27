@@ -17,21 +17,15 @@ namespace DistinctYear
             bool containTen;
             byte distingDigits = 0;
 
-            //Check if the passed year contains double digits
-            distingDigits = (byte)yearStr.Distinct().Count();
+            //Add one year
+            year += 1;
 
-            //if the passed year doesn't contain double digits add one year
-            if (distingDigits == 4)
-            {
-                year += 1;
-            }
-
-            //Check if the new year contains double digits
+            //Check if the next year contains double digits
             distingDigits = 0;
             yearStr = Convert.ToString(year);
             distingDigits = (byte)yearStr.Distinct().Count();
 
-            //if if the new year doesn't contain double digits return it
+            //if the next year doesn't contain double digits return it
             if (distingDigits == 4)
             {
                 return year;
