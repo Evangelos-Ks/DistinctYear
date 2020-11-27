@@ -2,8 +2,10 @@
 Add a positive year between 10 and 2,000,000,000 and find the next distinct year.
 Distinct year is a number where all its digits are distict (the same digit is not repeated in the year).
 There are two modes.
+
   1st Mode:
           The user can choose a year between 10 and 2,000,000,000 and will see the input and distinct year output in the console.
+          
   2nd Mode: 
           The user can choose the range of the random examples that they want.
           The user can choose the range of the years (between 10 and 2,000,000,000) that the programme will generate.
