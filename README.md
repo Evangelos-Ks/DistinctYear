@@ -1,6 +1,7 @@
 # DistinctYear
 Add a positive year between 10 and 2,000,000,000 and find the next distinct year.
 Distinct year is a number where all its digits are distict (the same digit is not repeated in the year).
+
 There are two modes.
 
   1st Mode:
